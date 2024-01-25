@@ -3,24 +3,37 @@ package com.kaushik.roomdemo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.kaushik.roomdemo.ui.theme.RoomDemoTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.kaushik.roomdemo.data.AppDatabase
+import com.kaushik.roomdemo.screens.HomeScreen
+import com.kaushik.roomdemo.screens.InsertScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            RoomDemoTheme {
+        val db by lazy {
+            Room.databaseBuilder(
+                applicationContext,
+                AppDatabase::class.java, "users.db"
+            ).build()
+        }
 
+        val sharedPref = getSharedPreferences("sharedPref", MODE_PRIVATE)
+        sharedPref.edit().putInt("id", 0).commit()
+        setContent {
+            val navController = rememberNavController()
+            NavHost(navController = navController, startDestination = "home") {
+                composable("home") {
+                    HomeScreen(navController)
+                }
+                composable("insert") {
+                    InsertScreen(db)
+                }
             }
         }
     }
 }
+
