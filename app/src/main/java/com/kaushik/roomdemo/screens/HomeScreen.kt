@@ -21,10 +21,10 @@ fun HomeScreen(navController: NavHostController) {
         Button(onClick = { navController.navigate("insert") }) {
             Text(text = "Insert")
         }
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Update")
+        Button(onClick = { navController.navigate("list") }) {
+            Text(text = "List")
         }
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { navController.navigate("delete") }) {
             Text(text = "Delete")
         }
     }
